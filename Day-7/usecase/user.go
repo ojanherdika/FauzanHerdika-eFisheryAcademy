@@ -11,6 +11,8 @@ type IUserUsecase interface {
 	CreateUser(user entity.UserRequest) (entity.User, error)
 	GetAllUser() ([]entity.User, error)
 	GetUserById(id int) (entity.User, error)
+	UpdateUser(user entity.UserRequest, id int) (entity.User, error)
+	DeleteUser(id int) error
 }
 type UserUsecase struct {
 	userRepository repository.IUserRespository
@@ -43,13 +45,21 @@ func (usecase UserUsecase) GetAllUser() ([]entity.UserResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	// for _, value :=range []entity.UserResponse{
-	// 	fmt.Println(value.ID)
-	// }
+	//maping manual
 	userRes := []entity.UserResponse{}
-	// userRes = append(userRes, users)
+	for _, item := range users {
+		userRespone := entity.UserResponse{
+			ID:       item.ID,
+			Username: item.Username,
+			Email:    item.Email,
+			Phone:    item.Phone,
+		}
 
-	copier.Copy(&userRes, &users)
+		userRes = append(userRes, userRespone)
+	}
+	//maping with copier
+	// userRes = append(userRes, users)
+	// copier.Copy(&userRes, &users)
 	return userRes, nil
 }
 func (usecase UserUsecase) GetUserById(id int) (entity.UserResponse, error) {
@@ -60,4 +70,27 @@ func (usecase UserUsecase) GetUserById(id int) (entity.UserResponse, error) {
 	userRes := entity.UserResponse{}
 	copier.Copy(&userRes, &user)
 	return userRes, nil
+}
+func (usecase UserUsecase) UpdateUser(userRequest entity.UserRequest, id int) (entity.UserResponse, error) {
+	user, err := usecase.userRepository.FindById(id)
+	if err != nil {
+		return entity.UserResponse{}, err
+	}
+	user.Username = userRequest.Username
+	user.Email = userRequest.Email
+	user.Phone = userRequest.Phone
+
+	copier.CopyWithOption(&user, &userRequest, copier.Option{IgnoreEmpty: true})
+	user, err = usecase.userRepository.Update(user)
+	userRes := entity.UserResponse{}
+	copier.Copy(&userRes, &user)
+	return userRes, nil
+}
+func (usecase UserUsecase) DeleteUser(id int) error {
+	_, err := usecase.userRepository.FindById(id)
+	if err != nil {
+		return err
+	}
+	err = usecase.userRepository.Delete(id)
+	return err
 }

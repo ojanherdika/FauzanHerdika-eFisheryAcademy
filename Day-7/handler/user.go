@@ -45,3 +45,23 @@ func (handler UserHandler) GetUserByID(c echo.Context) error {
 
 	return c.JSON(200, user)
 }
+func (handler UserHandler) UpdateUser(c echo.Context) error {
+	userId, _ := strconv.Atoi(c.Param("id"))
+	userRequest := entity.UserRequest{}
+	c.Bind(&userRequest)
+
+	user, err := handler.userUsecase.UpdateUser(userRequest, userId)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Update User failed")
+	}
+	return c.JSON(200, user)
+}
+
+func (handler UserHandler) DeleteUser(c echo.Context) error {
+	userId, _ := strconv.Atoi(c.Param("id"))
+	err := handler.userUsecase.DeleteUser(userId)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Update User failed")
+	}
+	return c.JSON(http.StatusOK, "Delete User Berhasil")
+}
