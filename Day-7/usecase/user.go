@@ -10,6 +10,7 @@ import (
 type IUserUsecase interface {
 	CreateUser(user entity.UserRequest) (entity.User, error)
 	GetAllUser() ([]entity.User, error)
+	GetUserById(id int) (entity.User, error)
 }
 type UserUsecase struct {
 	userRepository repository.IUserRespository
@@ -42,7 +43,21 @@ func (usecase UserUsecase) GetAllUser() ([]entity.UserResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	// for _, value :=range []entity.UserResponse{
+	// 	fmt.Println(value.ID)
+	// }
 	userRes := []entity.UserResponse{}
+	// userRes = append(userRes, users)
+
 	copier.Copy(&userRes, &users)
+	return userRes, nil
+}
+func (usecase UserUsecase) GetUserById(id int) (entity.UserResponse, error) {
+	user, err := usecase.userRepository.FindById(id)
+	if err != nil {
+		return entity.UserResponse{}, err
+	}
+	userRes := entity.UserResponse{}
+	copier.Copy(&userRes, &user)
 	return userRes, nil
 }

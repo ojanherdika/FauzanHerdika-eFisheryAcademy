@@ -9,6 +9,7 @@ import (
 type IUserRespository interface {
 	Store(user entity.User) (entity.User, error)
 	FindAll() ([]entity.User, error)
+	FindById(id int) (entity.User, error)
 }
 type UserRepository struct {
 	db *gorm.DB
@@ -29,4 +30,11 @@ func (r UserRepository) FindAll() ([]entity.User, error) {
 		return nil, err
 	}
 	return users, nil
+}
+func (r UserRepository) FindById(id int) (entity.User, error) {
+	var user entity.User
+	if err := r.db.Debug().Where("id = ?", id).First(&user).Error; err != nil {
+		return entity.User{}, err
+	}
+	return user, nil
 }

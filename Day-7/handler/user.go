@@ -3,6 +3,8 @@ package handler
 import (
 	"clean_arch/entity"
 	"clean_arch/usecase"
+	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -31,5 +33,15 @@ func (handler UserHandler) GetAllUser(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return c.JSON(201, users)
+	return c.JSON(200, users)
+}
+func (handler UserHandler) GetUserByID(c echo.Context) error {
+	userId, _ := strconv.Atoi(c.Param("id"))
+
+	user, err := handler.userUsecase.GetUserById(userId)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Get user by id failed")
+	}
+
+	return c.JSON(200, user)
 }
