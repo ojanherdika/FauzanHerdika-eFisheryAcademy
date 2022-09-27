@@ -25,3 +25,11 @@ func (handler UserHandler) CreateUser(c echo.Context) error {
 	}
 	return c.JSON(201, user)
 }
+func (handler UserHandler) GetAllUser(c echo.Context) error {
+	users, err := handler.userUsecase.GetAllUser()
+
+	if err != nil {
+		return err
+	}
+	return c.JSON(201, users)
+}

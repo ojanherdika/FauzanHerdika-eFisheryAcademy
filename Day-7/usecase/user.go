@@ -3,10 +3,13 @@ package usecase
 import (
 	"clean_arch/entity"
 	"clean_arch/repository"
+
+	"github.com/jinzhu/copier"
 )
 
 type IUserUsecase interface {
 	CreateUser(user entity.UserRequest) (entity.User, error)
+	GetAllUser() ([]entity.User, error)
 }
 type UserUsecase struct {
 	userRepository repository.IUserRespository
@@ -32,5 +35,14 @@ func (usecase UserUsecase) CreateUser(user entity.UserRequest) (entity.UserRespo
 		Email:    users.Email,
 		Phone:    users.Phone,
 	}
+	return userRes, nil
+}
+func (usecase UserUsecase) GetAllUser() ([]entity.UserResponse, error) {
+	users, err := usecase.userRepository.FindAll()
+	if err != nil {
+		return nil, err
+	}
+	userRes := []entity.UserResponse{}
+	copier.Copy(&userRes, &users)
 	return userRes, nil
 }
