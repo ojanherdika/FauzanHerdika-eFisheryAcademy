@@ -17,3 +17,8 @@ type UserResponse struct {
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
 }
+type ErrorResponse struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Error   string `json:"error"`
+}

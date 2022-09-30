@@ -29,11 +29,24 @@ func (handler UserHandler) CreateUser(c echo.Context) error {
 }
 func (handler UserHandler) GetAllUser(c echo.Context) error {
 	users, err := handler.userUsecase.GetAllUser()
-
+	//response handling with struct
 	if err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, entity.ErrorResponse{
+			Code:    http.StatusBadRequest,
+			Message: "Get User Failed",
+			Error:   err.Error(),
+		})
 	}
-	return c.JSON(200, users)
+	//response handling with new map interface
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":    http.StatusOK,
+		"message": "success get all user",
+		"data":    users,
+	})
+	// if err != nil {
+	// 	return err
+	// }
+	// return c.JSON(200, users)
 }
 func (handler UserHandler) GetUserByID(c echo.Context) error {
 	userId, _ := strconv.Atoi(c.Param("id"))
@@ -61,7 +74,7 @@ func (handler UserHandler) DeleteUser(c echo.Context) error {
 	userId, _ := strconv.Atoi(c.Param("id"))
 	err := handler.userUsecase.DeleteUser(userId)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Update User failed")
+		return echo.NewHTTPError(http.StatusUnauthorized, "Delete User failed")
 	}
 	return c.JSON(http.StatusOK, "Delete User Berhasil")
 }
