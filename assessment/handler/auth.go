@@ -15,12 +15,15 @@ import (
 
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
+	if err != nil {
+		return false
+	}
+	return true
 }
 func getUserByEmail(e string) (*entity.User, error) {
 	var user entity.User
 
-	if err := config.DB.Debug().Where(&entity.User{Email: e}).Find(&user).Error; err != nil {
+	if err := config.DB.Model(entity.User{}).Where("email = ?", e).First(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
@@ -41,10 +44,10 @@ func getUserByName(u string) (*entity.User, error) {
 }
 func Login(c echo.Context) error {
 	input := entity.LoginUser{}
-	u := entity.User{}
+	_ = c.Bind(&input)
 	email := input.Email
 	pass := input.Password
-	data, err := getUserByEmail(email)
+	user, err := getUserByEmail(email)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, entity.ErrorResponse{
 			Code:    http.StatusBadRequest,
@@ -52,30 +55,12 @@ func Login(c echo.Context) error {
 			Error:   err.Error(),
 		})
 	}
-	user, err := getUserByName(email)
-	if err != nil {
+	if user == nil {
 		return c.JSON(http.StatusBadRequest, entity.ErrorResponse{
 			Code:    http.StatusBadRequest,
-			Message: "Invalid Email",
-			Error:   err.Error(),
+			Message: "user not found",
+			Error:   "user not found",
 		})
-	}
-	if data == nil {
-		u = entity.User{
-			ID:       user.ID,
-			Name:     user.Name,
-			Email:    user.Email,
-			Password: user.Password,
-			Phone:    user.Phone,
-		}
-	} else {
-		u = entity.User{
-			ID:       data.ID,
-			Name:     data.Name,
-			Email:    data.Email,
-			Password: data.Password,
-			Phone:    data.Phone,
-		}
 	}
 	if !CheckPasswordHash(pass, user.Password) {
 		return c.JSON(http.StatusBadRequest, entity.ErrorResponse{
@@ -86,10 +71,10 @@ func Login(c echo.Context) error {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
-	claims["id"] = u.ID
-	claims["name"] = u.Name
-	claims["email"] = u.Email
-	claims["phone"] = u.Phone
+	claims["id"] = user.ID
+	claims["name"] = user.Name
+	claims["email"] = user.Email
+	claims["phone"] = user.Phone
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
 	t, err := token.SignedString([]byte(config.Config("SECRET")))

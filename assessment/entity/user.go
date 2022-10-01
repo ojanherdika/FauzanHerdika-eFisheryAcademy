@@ -14,13 +14,13 @@ type LoginUser struct {
 type CreateUserRequest struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
-	Password string `json:"-" column:"password"`
+	Password string `json:"password" column:"password"`
 	Phone    string `json:"phone"`
 }
 type UpdateUserRequset struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
-	Password string `json:"-" column:"password"`
+	Password string `json:"password" column:"password"`
 	Phone    string `json:"phone"`
 }
 type UserResponse struct {

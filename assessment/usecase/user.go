@@ -22,12 +22,12 @@ type UserUsecase struct {
 func NewUserUseCase(userRepository repository.IUserRespository) *UserUsecase {
 	return &UserUsecase{userRepository}
 }
-func hashPassword(password string) (string, error) {
+func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
 }
 func (usecase UserUsecase) CreateUser(user entity.CreateUserRequest) (entity.UserResponse, error) {
-	hash, err := hashPassword(user.Password)
+	hash, err := HashPassword(user.Password)
 	u := entity.User{
 		Name:     user.Name,
 		Email:    user.Email,
@@ -73,7 +73,7 @@ func (usecase UserUsecase) UpdateUser(userRequest entity.UpdateUserRequset, id i
 	if err != nil {
 		return entity.UserResponse{}, err
 	}
-	hash, err := hashPassword(user.Password)
+	hash, err := HashPassword(user.Password)
 
 	user.Name = userRequest.Name
 	user.Email = userRequest.Email
