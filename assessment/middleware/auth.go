@@ -1,14 +1,15 @@
 package middleware
 
 import (
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
-func IsLoggedIn() {
-	middleware.JWTWithConfig(middleware.JWTConfig{
+func IsLogIn(e *echo.Echo) echo.MiddlewareFunc {
+	jwtMiddleware := middleware.JWTWithConfig(middleware.JWTConfig{
 		SigningKey: []byte("SECRET"),
 	})
-
+	return jwtMiddleware
 }
 
 // func jwtError(c echo.Context, err error) error {

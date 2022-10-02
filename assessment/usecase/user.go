@@ -41,9 +41,9 @@ func (usecase UserUsecase) CreateUser(user entity.CreateUserRequest) (entity.Use
 	}
 	userRes := entity.UserResponse{
 		ID:    users.ID,
-		Name:  user.Name,
-		Email: user.Email,
-		Phone: user.Phone,
+		Name:  users.Name,
+		Email: users.Email,
+		Phone: users.Phone,
 	}
 	return userRes, nil
 }
@@ -74,11 +74,11 @@ func (usecase UserUsecase) UpdateUser(userRequest entity.UpdateUserRequset, id i
 		return entity.UserResponse{}, err
 	}
 	hash, err := HashPassword(userRequest.Password)
-
-	user.Name = userRequest.Name
-	user.Email = userRequest.Email
-	user.Password = hash
-	user.Phone = userRequest.Phone
+	userRequest.Password = hash
+	// user.Name = userRequest.Name
+	// user.Email = userRequest.Email
+	// user.Password = hash
+	// user.Phone = userRequest.Phone
 
 	copier.CopyWithOption(&user, &userRequest, copier.Option{IgnoreEmpty: true})
 	user, err = usecase.userRepository.Update(user)

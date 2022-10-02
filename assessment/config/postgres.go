@@ -30,5 +30,5 @@ func Config(key string) string {
 	return os.Getenv(key)
 }
 func Migrate() {
-	DB.AutoMigrate(&entity.User{})
+	DB.AutoMigrate(&entity.Product{})
 }
