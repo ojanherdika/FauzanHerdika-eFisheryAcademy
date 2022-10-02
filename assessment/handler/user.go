@@ -47,10 +47,6 @@ func (handler UserHandler) GetAllUser(c echo.Context) error {
 		"message": "Success Get All User",
 		"data":    users,
 	})
-	// if err != nil {
-	// 	return err
-	// }
-	// return c.JSON(200, users)
 }
 func (handler UserHandler) GetUserByID(c echo.Context) error {
 	userId, _ := strconv.Atoi(c.Param("id"))

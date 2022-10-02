@@ -31,17 +31,6 @@ func getUserByEmail(e string) (*entity.User, error) {
 	}
 	return &user, nil
 }
-func getUserByName(u string) (*entity.User, error) {
-	var user entity.User
-
-	if err := config.DB.Debug().Where(&entity.User{Name: u}).Find(&user).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
-		}
-		return nil, err
-	}
-	return &user, nil
-}
 func Login(c echo.Context) error {
 	input := entity.LoginUser{}
 	_ = c.Bind(&input)
@@ -75,7 +64,7 @@ func Login(c echo.Context) error {
 	claims["name"] = user.Name
 	claims["email"] = user.Email
 	claims["phone"] = user.Phone
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
 	t, err := token.SignedString([]byte(config.Config("SECRET")))
 	if err != nil {

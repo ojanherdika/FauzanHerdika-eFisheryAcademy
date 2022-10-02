@@ -73,7 +73,7 @@ func (usecase UserUsecase) UpdateUser(userRequest entity.UpdateUserRequset, id i
 	if err != nil {
 		return entity.UserResponse{}, err
 	}
-	hash, err := HashPassword(user.Password)
+	hash, err := HashPassword(userRequest.Password)
 
 	user.Name = userRequest.Name
 	user.Email = userRequest.Email
