@@ -14,6 +14,7 @@ func main() {
 	config.Database()
 	// config.Migrate()
 	e := echo.New()
+	// e.Static("/static", "upload/payment/Screenshot15.png")
 	userRepository := repository.NewUserRepository(config.DB)
 	userUsecase := usecase.NewUserUseCase(userRepository)
 	userHandler := handler.NewUserHandler(userUsecase)

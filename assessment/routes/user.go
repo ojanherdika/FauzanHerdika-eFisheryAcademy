@@ -15,15 +15,11 @@ func Routes(e *echo.Echo, userHandler *handler.UserHandler) {
 	e.DELETE("/users/:id", userHandler.DeleteUser)
 
 	e.POST("/login", handler.Login)
-	r := e.Group("/restricted")
+	r := e.Group("")
 	config := middleware.JWTConfig{
 		SigningKey: []byte(config.Config("SECRET")),
 	}
 	r.Use(middleware.JWTWithConfig(config))
 	r.GET("/users/:id", userHandler.GetUserByID)
-	// e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {})
-	// middware := e
-	// middware.Use(midd.IsLogIn(e))
 
-	// e.Use(middleware.JWTWithConfig())
 }

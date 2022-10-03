@@ -3,7 +3,10 @@ package handler
 import (
 	"e-commerce/entity"
 	"e-commerce/usecase"
+	"fmt"
+	"io"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
@@ -17,14 +20,50 @@ func NewProductHandler(productUsecase *usecase.ProductUsecase) *ProductHandler {
 	return &ProductHandler{productUsecase}
 }
 func (handler ProductHandler) CreateProduct(c echo.Context) error {
-	req := entity.CreateProductRequest{}
-	if err := c.Bind(&req); err != nil {
-		return err
-	}
-	product, err := handler.productUsecase.CreateProduct(req)
+	// req := entity.CreateProductRequest{}
+	// if err := c.Bind(&req); err != nil {
+	// 	return err
+	// }
+	// product, err := handler.productUsecase.CreateProduct(req)
+	// if err != nil {
+	// 	return err
+	// }
+	// e := echo.New()
+	name := c.FormValue("name")
+	price, _ := strconv.Atoi(c.FormValue("price"))
+	category := c.FormValue("category")
+	description := c.FormValue("description")
+	file, err := c.FormFile("photo")
+
+	src, err := file.Open()
 	if err != nil {
 		return err
 	}
+	defer src.Close()
+	// destinattion
+	dst, err := os.Create(fmt.Sprintf("%s%s", "upload/product/", file.Filename))
+	if err != nil {
+		return err
+	}
+
+	defer dst.Close()
+
+	// Copy
+	if _, err := io.Copy(dst, src); err != nil {
+		return err
+	}
+
+	// filePath := fmt.Sprintf("%s/%s", os.Getenv("BASE_URL"), dst.Name())
+	filePath := fmt.Sprintf("%s", dst.Name())
+
+	req := entity.CreateProductRequest{
+		Name:        name,
+		Photo:       filePath,
+		Price:       price,
+		Category:    category,
+		Description: description,
+	}
+	product, err := handler.productUsecase.CreateProduct(req)
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":    http.StatusOK,
 		"message": "Success Create Product",
@@ -68,14 +107,47 @@ func (handler ProductHandler) GetProductByID(c echo.Context) error {
 }
 func (handler ProductHandler) UpdateProduct(c echo.Context) error {
 	productId, _ := strconv.Atoi(c.Param("id"))
-	productRequest := entity.UpdateProductRequset{}
+	name := c.FormValue("name")
+	price, _ := strconv.Atoi(c.FormValue("price"))
+	category := c.FormValue("category")
+	description := c.FormValue("description")
+	file, err := c.FormFile("photo")
+
+	src, err := file.Open()
+	if err != nil {
+		return err
+	}
+	defer src.Close()
+	// destinattion
+	dst, err := os.Create(fmt.Sprintf("%s%s", "upload/product/", file.Filename))
+	if err != nil {
+		return err
+	}
+
+	defer dst.Close()
+
+	// Copy
+	if _, err := io.Copy(dst, src); err != nil {
+		return err
+	}
+
+	filePath := fmt.Sprintf("%s", dst.Name())
+
+	req := entity.UpdateProductRequest{
+		Name:        name,
+		Photo:       filePath,
+		Price:       price,
+		Category:    category,
+		Description: description,
+	}
+	productRequest := entity.UpdateProductRequest{}
 	c.Bind(&productRequest)
 
-	product, err := handler.productUsecase.UpdateProduct(productRequest, productId)
+	product, err := handler.productUsecase.UpdateProduct(req, productId)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, entity.ErrorResponse{
 			Code:    http.StatusBadRequest,
-			Message: "Update User Failed",
+			Message: "Update Product Failed",
 			Error:   err.Error(),
 		})
 	}

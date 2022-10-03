@@ -11,7 +11,7 @@ type IProductUsecase interface {
 	CreateProduct(product entity.CreateProductRequest) (entity.Product, error)
 	GetAllProduct() ([]entity.Product, error)
 	GetProductById(id int) (entity.Product, error)
-	UpdateProduct(product entity.UpdateProductRequset, id int) (entity.Product, error)
+	UpdateProduct(product entity.UpdateProductRequest, id int) (entity.Product, error)
 	DeleteProduct(id int) error
 }
 type ProductUsecase struct {
@@ -65,7 +65,7 @@ func (usecase ProductUsecase) GetProductById(id int) (entity.ProductResponse, er
 	return productRes, nil
 }
 
-func (usecase ProductUsecase) UpdateProduct(productRequest entity.UpdateProductRequset, id int) (entity.ProductResponse, error) {
+func (usecase ProductUsecase) UpdateProduct(productRequest entity.UpdateProductRequest, id int) (entity.ProductResponse, error) {
 	product, err := usecase.productRepository.FindById(id)
 	if err != nil {
 		return entity.ProductResponse{}, err
