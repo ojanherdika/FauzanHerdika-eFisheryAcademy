@@ -54,7 +54,7 @@ func (handler ProductHandler) CreateProduct(c echo.Context) error {
 	}
 
 	// filePath := fmt.Sprintf("%s/%s", os.Getenv("BASE_URL"), dst.Name())
-	filePath := fmt.Sprintf("%s", dst.Name())
+	filePath := fmt.Sprintf("%s/%s", os.Getenv("BASE_URL"), dst.Name())
 
 	req := entity.CreateProductRequest{
 		Name:        name,
@@ -131,7 +131,7 @@ func (handler ProductHandler) UpdateProduct(c echo.Context) error {
 		return err
 	}
 
-	filePath := fmt.Sprintf("%s", dst.Name())
+	filePath := fmt.Sprintf("%s/%s", os.Getenv("BASE_URL"), dst.Name())
 
 	req := entity.UpdateProductRequest{
 		Name:        name,
@@ -168,5 +168,5 @@ func (handler ProductHandler) DeleteProduct(c echo.Context) error {
 			Error:   err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, "Delete Product Berhasil")
+	return c.JSON(http.StatusOK, "Delete Product Success")
 }

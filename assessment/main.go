@@ -14,7 +14,7 @@ func main() {
 	config.Database()
 	// config.Migrate()
 	e := echo.New()
-	// e.Static("/static", "upload/payment/Screenshot15.png")
+	e.Static("/upload/product", "upload/product/")
 	userRepository := repository.NewUserRepository(config.DB)
 	userUsecase := usecase.NewUserUseCase(userRepository)
 	userHandler := handler.NewUserHandler(userUsecase)
@@ -23,6 +23,7 @@ func main() {
 	productHandler := handler.NewProductHandler(productUsecase)
 	routes.Routes(e, userHandler)
 	routes.ProductRoutes(e, productHandler)
+	// routes.StaticRoutes(e)
 	e.Logger.Fatal(e.Start(":8080"))
 
 }
