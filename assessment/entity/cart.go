@@ -30,5 +30,7 @@ type CartResponse struct {
 	Quantity  int  `json:"quantity"`
 	Checkout  bool `json:"checkout"`
 	UserID    int  `json:"user_id"`
-	ProductID int  `json:"product_id"`
+	User      UserResponse
+	ProductID int `json:"product_id"`
+	Product   ProductResponse
 }
