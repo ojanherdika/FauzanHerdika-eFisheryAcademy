@@ -83,7 +83,7 @@ func (usecase ProductUsecase) UpdateProduct(productRequest entity.UpdateProductR
 	copier.Copy(&productRes, &product)
 	return productRes, nil
 }
-func (usecase ProductUsecase) DeleteUser(id int) error {
+func (usecase ProductUsecase) DeleteProduct(id int) error {
 	_, err := usecase.productRepository.FindById(id)
 	if err != nil {
 		return err

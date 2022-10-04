@@ -68,7 +68,7 @@ func (handler UserHandler) GetUserByID(c echo.Context) error {
 }
 func (handler UserHandler) UpdateUser(c echo.Context) error {
 	userId, _ := strconv.Atoi(c.Param("id"))
-	userRequest := entity.UpdateUserRequset{}
+	userRequest := entity.UpdateUserRequest{}
 	c.Bind(&userRequest)
 
 	user, err := handler.userUsecase.UpdateUser(userRequest, userId)

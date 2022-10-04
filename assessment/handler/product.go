@@ -160,7 +160,7 @@ func (handler ProductHandler) UpdateProduct(c echo.Context) error {
 
 func (handler ProductHandler) DeleteProduct(c echo.Context) error {
 	productId, _ := strconv.Atoi(c.Param("id"))
-	err := handler.productUsecase.DeleteUser(productId)
+	err := handler.productUsecase.DeleteProduct(productId)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, entity.ErrorResponse{
 			Code:    http.StatusBadRequest,

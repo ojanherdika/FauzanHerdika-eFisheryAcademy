@@ -1,20 +1,34 @@
 package entity
 
 type Cart struct {
-	ID       int    `json:"id" gorm:"primary_key"`
-	Quantity string `json:"quantity"`
-	Checkout bool   `json:"checkout"`
+	ID        int  `json:"id" gorm:"primary_key"`
+	Quantity  int  `json:"quantity"`
+	Checkout  bool `json:"checkout"`
+	UserID    int  `json:"user_id"`
+	User      User
+	ProductID int `json:"product_id"`
+	Product   Product
 }
 type CreateCartRequest struct {
-	Quantity string `json:"quantity"`
-	Checkout bool   `json:"checkout"`
+	Quantity  int  `json:"quantity"`
+	Checkout  bool `json:"checkout"`
+	UserID    int  `json:"user_id"`
+	User      User
+	ProductID int `json:"product_id"`
+	Product   Product
 }
-type UpdateCartRequset struct {
-	Quantity string `json:"quantity"`
-	Checkout bool   `json:"checkout"`
+type UpdateCartRequest struct {
+	Quantity  int  `json:"quantity"`
+	Checkout  bool `json:"checkout"`
+	UserID    int  `json:"user_id"`
+	User      User
+	ProductID int `json:"product_id"`
+	Product   Product
 }
 type CartResponse struct {
-	ID       int    `json:"id" gorm:"primary_key"`
-	Quantity string `json:"quantity"`
-	Checkout bool   `json:"checkout"`
+	ID        int  `json:"id" gorm:"primary_key"`
+	Quantity  int  `json:"quantity"`
+	Checkout  bool `json:"checkout"`
+	UserID    int  `json:"user_id"`
+	ProductID int  `json:"product_id"`
 }

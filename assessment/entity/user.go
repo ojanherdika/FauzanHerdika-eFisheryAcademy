@@ -17,7 +17,7 @@ type CreateUserRequest struct {
 	Password string `json:"password" column:"password"`
 	Phone    string `json:"phone"`
 }
-type UpdateUserRequset struct {
+type UpdateUserRequest struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password" column:"password"`

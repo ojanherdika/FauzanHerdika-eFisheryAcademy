@@ -21,9 +21,12 @@ func main() {
 	productRepository := repository.NewProductRepository(config.DB)
 	productUsecase := usecase.NewProductUseCase(productRepository)
 	productHandler := handler.NewProductHandler(productUsecase)
+	cartRepository := repository.NewCartRepository(config.DB)
+	cartUsecase := usecase.NewCartUseCase(cartRepository)
+	cartHandler := handler.NewCartHandler(cartUsecase)
 	routes.Routes(e, userHandler)
 	routes.ProductRoutes(e, productHandler)
-	// routes.StaticRoutes(e)
+	routes.CartRoutes(e, cartHandler)
 	e.Logger.Fatal(e.Start(":8080"))
 
 }

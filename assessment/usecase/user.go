@@ -12,7 +12,7 @@ type IUserUsecase interface {
 	CreateUser(user entity.CreateUserRequest) (entity.User, error)
 	GetAllUser() ([]entity.User, error)
 	GetUserById(id int) (entity.User, error)
-	UpdateUser(user entity.UpdateUserRequset, id int) (entity.User, error)
+	UpdateUser(user entity.UpdateUserRequest, id int) (entity.User, error)
 	DeleteUser(id int) error
 }
 type UserUsecase struct {
@@ -68,7 +68,7 @@ func (usecase UserUsecase) GetUserById(id int) (entity.UserResponse, error) {
 	return userRes, nil
 }
 
-func (usecase UserUsecase) UpdateUser(userRequest entity.UpdateUserRequset, id int) (entity.UserResponse, error) {
+func (usecase UserUsecase) UpdateUser(userRequest entity.UpdateUserRequest, id int) (entity.UserResponse, error) {
 	user, err := usecase.userRepository.FindById(id)
 	if err != nil {
 		return entity.UserResponse{}, err
