@@ -13,6 +13,7 @@ func ProductRoutes(e *echo.Echo, productHandler *handler.ProductHandler) {
 	e.DELETE("/products/:id", productHandler.DeleteProduct)
 	e.GET("/products/:id", productHandler.GetProductByID)
 	e.GET("/products/:category", productHandler.GetProductByCategory)
+	e.GET("/products/:priceMin/:priceMax", productHandler.GetProductByPrice)
 	// r := e.Group("/restricted")
 	// config := middleware.JWTConfig{
 	// 	SigningKey: []byte("SECRET"),

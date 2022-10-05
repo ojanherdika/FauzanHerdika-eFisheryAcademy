@@ -11,6 +11,7 @@ type IProductRespository interface {
 	FindAll() ([]entity.Product, error)
 	FindById(id int) (entity.Product, error)
 	FindByCategory(category string) ([]entity.Product, error)
+	FindByPrice(priceMin int, priceMax int) ([]entity.Product, error)
 	Update(product entity.Product) (entity.Product, error)
 	Delete(id int) error
 }
@@ -45,6 +46,13 @@ func (r ProductRepository) FindByCategory(category string) ([]entity.Product, er
 	var product []entity.Product
 	if err := r.db.Debug().Where("category = ?", category).Find(&product).Error; err != nil {
 		return nil, err
+	}
+	return product, nil
+}
+func (r ProductRepository) FindByPrice(priceMin int, priceMax int) ([]entity.Product, error) {
+	var product []entity.Product
+	if err := r.db.Debug().Where("price >= ? AND price <= ? ", priceMin, priceMax).Find(&product).Error; err != nil {
+		return []entity.Product{}, err
 	}
 	return product, nil
 }

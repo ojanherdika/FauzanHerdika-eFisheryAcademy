@@ -12,6 +12,7 @@ type IProductUsecase interface {
 	GetAllProduct() ([]entity.Product, error)
 	GetProductById(id int) (entity.Product, error)
 	GetProductByCategory(category string) ([]entity.Product, error)
+	GetProductByPrice(priceMin int, priceMax int) ([]entity.Product, error)
 	UpdateProduct(product entity.UpdateProductRequest, id int) (entity.Product, error)
 	DeleteProduct(id int) error
 }
@@ -67,6 +68,15 @@ func (usecase ProductUsecase) GetProductById(id int) (entity.ProductResponse, er
 }
 func (usecase ProductUsecase) GetProductByCategory(category string) ([]entity.ProductResponse, error) {
 	product, err := usecase.productRepository.FindByCategory(category)
+	if err != nil {
+		return []entity.ProductResponse{}, err
+	}
+	productRes := []entity.ProductResponse{}
+	copier.Copy(&productRes, &product)
+	return productRes, nil
+}
+func (usecase ProductUsecase) GetProductByPrice(priceMin int, priceMax int) ([]entity.ProductResponse, error) {
+	product, err := usecase.productRepository.FindByPrice(priceMin, priceMax)
 	if err != nil {
 		return []entity.ProductResponse{}, err
 	}

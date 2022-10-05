@@ -123,6 +123,25 @@ func (handler ProductHandler) GetProductByCategory(c echo.Context) error {
 		"data":    product,
 	})
 }
+func (handler ProductHandler) GetProductByPrice(c echo.Context) error {
+	priceMin, _ := strconv.Atoi(c.Param("priceMin"))
+	priceMax, _ := strconv.Atoi(c.Param("priceMax"))
+
+	product, err := handler.productUsecase.GetProductByPrice(priceMin, priceMax)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, entity.ErrorResponse{
+			Code:    http.StatusBadRequest,
+			Message: "Get Product by Price Failed",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":    http.StatusOK,
+		"message": "Success Get Product by Price",
+		"data":    product,
+	})
+}
 
 func (handler ProductHandler) UpdateProduct(c echo.Context) error {
 	productId, _ := strconv.Atoi(c.Param("id"))
