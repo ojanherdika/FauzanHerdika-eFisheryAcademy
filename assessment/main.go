@@ -15,6 +15,7 @@ func main() {
 	// config.Migrate()
 	e := echo.New()
 	e.Static("/upload/product", "upload/product/")
+	e.Static("/upload/payment", "upload/payment/")
 	userRepository := repository.NewUserRepository(config.DB)
 	userUsecase := usecase.NewUserUseCase(userRepository)
 	userHandler := handler.NewUserHandler(userUsecase)

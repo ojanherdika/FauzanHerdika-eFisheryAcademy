@@ -25,6 +25,9 @@ type UpdateCartRequest struct {
 	ProductID int `json:"product_id"`
 	Product   Product
 }
+type UpdateCartRequestPayment struct {
+	UserID int `json:"user_id"`
+}
 type CartResponse struct {
 	ID        int  `json:"id" gorm:"primary_key"`
 	Quantity  int  `json:"quantity"`

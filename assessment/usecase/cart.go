@@ -48,6 +48,17 @@ func getProductByID(e int) (entity.ProductResponse, error) {
 	}
 	return product, nil
 }
+func getProductsByID(e int) ([]entity.ProductResponse, error) {
+	var product []entity.ProductResponse
+
+	if err := config.DB.Model(entity.Product{}).Where("id = ?", e).Find(&product).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return product, nil
+		}
+		return product, err
+	}
+	return product, nil
+}
 func (usecase CartUsecase) CreateCart(cart entity.CreateCartRequest) (entity.CartResponse, error) {
 	u := entity.Cart{
 		Quantity:  cart.Quantity,
@@ -64,11 +75,11 @@ func (usecase CartUsecase) CreateCart(cart entity.CreateCartRequest) (entity.Car
 	product, _ := getProductByID(cart.ProductID)
 	cartRes := entity.CartResponse{
 		ID:        carts.ID,
-		Quantity:  cart.Quantity,
-		Checkout:  cart.Checkout,
-		UserID:    cart.UserID,
+		Quantity:  carts.Quantity,
+		Checkout:  carts.Checkout,
+		UserID:    carts.UserID,
 		User:      user,
-		ProductID: cart.ProductID,
+		ProductID: carts.ProductID,
 		Product:   product,
 	}
 	return cartRes, nil
@@ -78,6 +89,7 @@ func (usecase CartUsecase) GetAllCartByUser(id int) ([]entity.CartResponse, erro
 	if err != nil {
 		return nil, err
 	}
+	// user, _ := getUserByID(carts.UserID)
 	cartRes := []entity.CartResponse{}
 
 	//maping with copier

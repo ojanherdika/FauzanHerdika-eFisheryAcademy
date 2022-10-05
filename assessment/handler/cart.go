@@ -1,14 +1,19 @@
 package handler
 
 import (
+	"e-commerce/config"
 	"e-commerce/entity"
 	"e-commerce/usecase"
+	"errors"
 	"fmt"
+	"io"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
 type CartHandler struct {
@@ -17,6 +22,17 @@ type CartHandler struct {
 
 func NewCartHandler(cartUsecase *usecase.CartUsecase) *CartHandler {
 	return &CartHandler{cartUsecase}
+}
+func getUserByID(e int) (*entity.User, error) {
+	var user entity.User
+
+	if err := config.DB.Model(entity.User{}).Where("id = ?", e).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &user, nil
 }
 func (handler CartHandler) CreateCart(c echo.Context) error {
 
@@ -43,7 +59,41 @@ func (handler CartHandler) CreateCart(c echo.Context) error {
 		"data":    cart,
 	})
 }
+func (handler CartHandler) Payment(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	var userId int = int(claims["id"].(float64))
+	file, err := c.FormFile("payment")
 
+	src, err := file.Open()
+	if err != nil {
+		return err
+	}
+	defer src.Close()
+	// destinattion
+	dst, err := os.Create(fmt.Sprintf("%s%s", "upload/payment/", file.Filename))
+	if err != nil {
+		return err
+	}
+
+	defer dst.Close()
+
+	// Copy
+	if _, err := io.Copy(dst, src); err != nil {
+		return err
+	}
+	filePath := fmt.Sprintf("%s/%s", os.Getenv("BASE_URL"), dst.Name())
+	if payment := config.DB.Model(entity.Cart{}).Where("user_id = ?", userId).Update("checkout", true).Error; err != nil {
+		if errors.Is(payment, gorm.ErrRecordNotFound) {
+			return err
+		}
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":    http.StatusOK,
+		"message": "Success Payment",
+		"data":    filePath,
+	})
+}
 func (handler CartHandler) GetCartByUser(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)

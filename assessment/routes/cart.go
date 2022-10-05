@@ -20,5 +20,6 @@ func CartRoutes(e *echo.Echo, cartHandler *handler.CartHandler) {
 	r.POST("/carts", cartHandler.CreateCart)
 	r.PUT("/carts/:id", cartHandler.UpdateCart)
 	r.DELETE("/carts/:id", cartHandler.DeleteCart)
+	r.POST("/payment", cartHandler.Payment)
 
 }
