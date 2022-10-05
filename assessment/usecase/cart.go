@@ -61,7 +61,6 @@ func (usecase CartUsecase) CreateCart(cart entity.CreateCartRequest) (entity.Car
 	}
 	user, _ := getUserByID(cart.UserID)
 	product, _ := getProductByID(cart.ProductID)
-	// convertedUser, _ := json.Marshal(user)
 	cartRes := entity.CartResponse{
 		ID:        carts.ID,
 		Quantity:  cart.Quantity,
@@ -93,7 +92,6 @@ func (usecase CartUsecase) GetCartById(id int) (entity.CartResponse, error) {
 	copier.Copy(&cartRes, &cart)
 	return cartRes, nil
 }
-
 func (usecase CartUsecase) UpdateCart(cartRequest entity.UpdateCartRequest, id int) (entity.CartResponse, error) {
 	cart, err := usecase.cartRepository.FindById(id)
 	if err != nil {

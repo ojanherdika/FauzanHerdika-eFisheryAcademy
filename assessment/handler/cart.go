@@ -78,6 +78,7 @@ func (handler CartHandler) GetCartByID(c echo.Context) error {
 		"data":    cart,
 	})
 }
+
 func (handler CartHandler) UpdateCart(c echo.Context) error {
 	cartId, _ := strconv.Atoi(c.Param("id"))
 	cartRequest := entity.UpdateCartRequest{}

@@ -12,6 +12,7 @@ func ProductRoutes(e *echo.Echo, productHandler *handler.ProductHandler) {
 	e.PUT("/products/:id", productHandler.UpdateProduct)
 	e.DELETE("/products/:id", productHandler.DeleteProduct)
 	e.GET("/products/:id", productHandler.GetProductByID)
+	e.GET("/products/:category", productHandler.GetProductByCategory)
 	// r := e.Group("/restricted")
 	// config := middleware.JWTConfig{
 	// 	SigningKey: []byte("SECRET"),

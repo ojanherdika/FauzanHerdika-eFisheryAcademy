@@ -105,6 +105,25 @@ func (handler ProductHandler) GetProductByID(c echo.Context) error {
 		"data":    product,
 	})
 }
+func (handler ProductHandler) GetProductByCategory(c echo.Context) error {
+	productCategory := c.Param("category")
+
+	product, err := handler.productUsecase.GetProductByCategory(productCategory)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, entity.ErrorResponse{
+			Code:    http.StatusBadRequest,
+			Message: "Get Product by Category Failed",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":    http.StatusOK,
+		"message": "Success Get Product by Category",
+		"data":    product,
+	})
+}
+
 func (handler ProductHandler) UpdateProduct(c echo.Context) error {
 	productId, _ := strconv.Atoi(c.Param("id"))
 	name := c.FormValue("name")

@@ -10,6 +10,7 @@ type IProductRespository interface {
 	Store(product entity.Product) (entity.Product, error)
 	FindAll() ([]entity.Product, error)
 	FindById(id int) (entity.Product, error)
+	FindByCategory(category string) ([]entity.Product, error)
 	Update(product entity.Product) (entity.Product, error)
 	Delete(id int) error
 }
@@ -39,6 +40,13 @@ func (r ProductRepository) FindById(id int) (entity.Product, error) {
 		return entity.Product{}, err
 	}
 	return user, nil
+}
+func (r ProductRepository) FindByCategory(category string) ([]entity.Product, error) {
+	var product []entity.Product
+	if err := r.db.Debug().Where("category = ?", category).Find(&product).Error; err != nil {
+		return nil, err
+	}
+	return product, nil
 }
 func (repo ProductRepository) Update(product entity.Product) (entity.Product, error) {
 	if err := repo.db.Debug().Save(&product).Error; err != nil {
