@@ -15,6 +15,7 @@ type ICartUsecase interface {
 	GetAllCart() ([]entity.Cart, error)
 	GetCartById(id int) (entity.Cart, error)
 	UpdateCart(cart entity.UpdateCartRequest, id int) (entity.Cart, error)
+	FindByUser(id int) ([]entity.Cart, error)
 	DeleteCart(id int) error
 }
 type CartUsecase struct {
@@ -70,6 +71,17 @@ func (usecase CartUsecase) CreateCart(cart entity.CreateCartRequest) (entity.Car
 		ProductID: cart.ProductID,
 		Product:   product,
 	}
+	return cartRes, nil
+}
+func (usecase CartUsecase) GetAllCartByUser(id int) ([]entity.CartResponse, error) {
+	carts, err := usecase.cartRepository.FindByUser(id)
+	if err != nil {
+		return nil, err
+	}
+	cartRes := []entity.CartResponse{}
+
+	//maping with copier
+	copier.Copy(&cartRes, &carts)
 	return cartRes, nil
 }
 func (usecase CartUsecase) GetAllCart() ([]entity.CartResponse, error) {

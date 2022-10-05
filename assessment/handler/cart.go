@@ -43,6 +43,21 @@ func (handler CartHandler) CreateCart(c echo.Context) error {
 		"data":    cart,
 	})
 }
+
+func (handler CartHandler) GetCartByUser(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	var userId int = int(claims["id"].(float64))
+	cart, err := handler.cartUsecase.GetAllCartByUser(userId)
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":    http.StatusOK,
+		"message": "Success Get Cart User",
+		"data":    cart,
+	})
+}
 func (handler CartHandler) GetAllCart(c echo.Context) error {
 	carts, err := handler.cartUsecase.GetAllCart()
 	//response handling with struct

@@ -9,6 +9,7 @@ import (
 type ICartRespository interface {
 	Store(cart entity.Cart) (entity.Cart, error)
 	FindAll() ([]entity.Cart, error)
+	FindByUser(id int) ([]entity.Cart, error)
 	FindById(id int) (entity.Cart, error)
 	Update(cart entity.Cart) (entity.Cart, error)
 	Delete(id int) error
@@ -32,6 +33,13 @@ func (r CartRepository) FindAll() ([]entity.Cart, error) {
 		return nil, err
 	}
 	return carts, nil
+}
+func (r CartRepository) FindByUser(id int) ([]entity.Cart, error) {
+	var cart []entity.Cart
+	if err := r.db.Debug().Where("user_id = ?AND checkout = ?", id, false).Find(&cart).Error; err != nil {
+		return nil, err
+	}
+	return cart, nil
 }
 func (r CartRepository) FindById(id int) (entity.Cart, error) {
 	var cart entity.Cart
