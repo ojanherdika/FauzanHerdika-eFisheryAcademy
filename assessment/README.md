@@ -26,3 +26,9 @@ jika muncul beberapa error untuk package, maka jalankan command "go get" untuk m
 ```bash
  go get -u github.com/swaggo/swag/cmd/swag
 ```
+## How to use
+untuk melihat endpoint apasaja yang tersedia, bisa menggunakan link swagger pada local. contoh:
+```bash
+ http://localhost:8080/swagger/index.html
+```
+atau extract saja collection.json yang sudah tersedia pada project di postman.

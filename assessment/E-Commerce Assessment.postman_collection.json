@@ -1,0 +1,516 @@
+{
+	"info": {
+		"_postman_id": "cab785e0-5ea4-4c57-a82d-1ed007d1b526",
+		"name": "E-Commerce Assessment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9031081"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9qYW5oZXJkaWthQGdtYWlsLmNvbSIsImV4cCI6MTY2NDc4OTY1NSwiaWQiOjksIm5hbWUiOiJvamFuaGVyZGlrYSIsInBob25lIjoiMDgzMTIzNDUifQ.PZcKXu0T0mp643t5ob2CV-Ztyamewx9huR2eVF5FuFo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"ojanherdika@gmail.com\",\r\n    \"password\":\"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"fauzanherdika\",\r\n    \"email\":\"fauzanherdika@gmail.com\",\r\n    \"password\":\"12345\",\r\n    \"phone\":\"08312345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by Auth",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9qYW5oZXJkaWthQGdtYWlsLmNvbSIsImV4cCI6MTY2NDgwMDU1NiwiaWQiOjksIm5hbWUiOiJvamFuaGVyZGlrYSIsInBob25lIjoiMDgzMTIzNDUifQ.ZEqprlTTwWLSOf9vzsbJEoOwytpHUxoT8AUV0g67EWM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/user",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9qYW5oZXJkaWthQGdtYWlsLmNvbSIsImV4cCI6MTY2NTEyODU5OCwiaWQiOjksIm5hbWUiOiJvamFuaGVyZGlrYSIsInBob25lIjoiMDgzMTIzNDUifQ.FwntOPybrqkAogFny2DUp1U1BlnIPterqsqIeL9ex08",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"ojanhtp\",\r\n    \"email\":\"ojanhtp@gmail.com\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"08312345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/8",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Pakan Nila",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/C:/Users/Fauzan Herdika/Pictures/Screenshots/Screenshot16.png"
+								},
+								{
+									"key": "price",
+									"value": "20000",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "pakan",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, ",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Probiotik A",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/C:/Users/Fauzan Herdika/Pictures/Screenshots/Screenshot15.png"
+								},
+								{
+									"key": "price",
+									"value": "75000",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "vitamin",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, ",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/products/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/product/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/products/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/products/pakan",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products",
+								"pakan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by Price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/products/30000/50000",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products",
+								"30000",
+								"50000"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Create Cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9qYW5oZXJkaWthQGdtYWlsLmNvbSIsImV4cCI6MTY2NDk3MzEwNiwiaWQiOjksIm5hbWUiOiJvamFuaGVyZGlrYSIsInBob25lIjoiMDgzMTIzNDUifQ.YGNDrbR2kf1UizpaHCwH-YP3dfGSqhztqcpj1pOOZsE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\":3,\r\n    \"product_id\":3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/carts",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"carts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart by User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9qYW5odHBAZ21haWwuY29tIiwiZXhwIjoxNjY1MDU2Mjc3LCJpZCI6MTEsIm5hbWUiOiJvamFuaHRwIiwicGhvbmUiOiIwODMxMjM0NSJ9.7lsVcsIrk8_L8qblq2cE5ZqurbOaQf4dP0idoVz0InU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/carts/user",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"carts",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Cart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/carts",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"carts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Checkout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9qYW5odHBAZ21haWwuY29tIiwiZXhwIjoxNjY1MDU2Mjc3LCJpZCI6MTEsIm5hbWUiOiJvamFuaHRwIiwicGhvbmUiOiIwODMxMjM0NSJ9.7lsVcsIrk8_L8qblq2cE5ZqurbOaQf4dP0idoVz0InU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "payment",
+							"type": "file",
+							"src": "/C:/Users/Fauzan Herdika/Pictures/Screenshots/payment_test.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/payment",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

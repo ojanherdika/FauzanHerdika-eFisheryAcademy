@@ -14,15 +14,4 @@ func ProductRoutes(e *echo.Echo, productHandler *handler.ProductHandler) {
 	e.GET("/product/:id", productHandler.GetProductByID)
 	e.GET("/products/:category", productHandler.GetProductByCategory)
 	e.GET("/products/:priceMin/:priceMax", productHandler.GetProductByPrice)
-	// r := e.Group("/restricted")
-	// config := middleware.JWTConfig{
-	// 	SigningKey: []byte("SECRET"),
-	// }
-	// r.Use(middleware.JWTWithConfig(config))
-
-	// e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {})
-	// middware := e
-	// middware.Use(midd.IsLogIn(e))
-
-	// e.Use(middleware.JWTWithConfig())
 }
