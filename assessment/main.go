@@ -33,24 +33,29 @@ func main() {
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = config.Getenv("SWAGGER_HOST", "localhost:8080")
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
 	config.Database()
 	config.Migrate()
+
 	e := echo.New()
 	e.Static("/upload/product", "upload/product/")
 	e.Static("/upload/payment", "upload/payment/")
+
 	userRepository := repository.NewUserRepository(config.DB)
 	userUsecase := usecase.NewUserUseCase(userRepository)
 	userHandler := handler.NewUserHandler(userUsecase)
+	routes.Routes(e, userHandler)
+
 	productRepository := repository.NewProductRepository(config.DB)
 	productUsecase := usecase.NewProductUseCase(productRepository)
 	productHandler := handler.NewProductHandler(productUsecase)
+	routes.ProductRoutes(e, productHandler)
+
 	cartRepository := repository.NewCartRepository(config.DB)
 	cartUsecase := usecase.NewCartUseCase(cartRepository)
 	cartHandler := handler.NewCartHandler(cartUsecase)
-	routes.Routes(e, userHandler)
-	routes.ProductRoutes(e, productHandler)
 	routes.CartRoutes(e, cartHandler)
+
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.Logger.Fatal(e.Start(":8080"))
-
 }
