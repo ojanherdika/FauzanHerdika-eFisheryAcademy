@@ -22,11 +22,15 @@ BASE_URL="http://localhost:8080"
 ```
 setelah itu buat database bernama "e-commerce", setelah membuat database lalu jalankan command berikut:
 ```bash
-go run .
+go mod download
 ```
-jika muncul beberapa error untuk package, maka jalankan command "go get" untuk mendapatkan package yg diinginkan. setelah itu re run programnya dengan command "go run ." contoh:
+jika muncul beberapa error untuk package, maka jalankan command "go get" contoh:
 ```bash
  go get -u github.com/swaggo/swag/cmd/swag
+```
+setelah itu, run programnya dengan command:
+```bash
+ go run .
 ```
 ## How to use
 untuk melihat endpoint apasaja yang tersedia, bisa menggunakan link swagger pada local. contoh:
