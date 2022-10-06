@@ -12,6 +12,8 @@ untuk run, pertama-tama clone repo ini
 ```bash
 git clone https://github.com/ojanherdika/FauzanHerdika-eFisheryAcademy.git
 ```
+project E-Commerce ini tersedia pada folder "assessment". jika tidak memerlukan folder lain, bisa di delete saja.
+
 kemudian siapkan .env pada file projek yang isinya adalah sebagai berikut
 ```bash
 db_url=host=localhost user=postgres password=ur_password dbname=e-commerce port=5432 sslmode=disable TimeZone=Asia/Jakarta
