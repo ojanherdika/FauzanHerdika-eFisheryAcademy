@@ -6,11 +6,10 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 func Routes(e *echo.Echo, userHandler *handler.UserHandler) {
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
+
 	e.POST("/users", userHandler.CreateUser)
 	e.GET("/users", userHandler.GetAllUser)
 	e.POST("/login", handler.Login)
