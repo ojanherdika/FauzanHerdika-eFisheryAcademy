@@ -13,6 +13,11 @@ import (
 	"gorm.io/gorm"
 )
 
+type LoginInput struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	if err != nil {
@@ -31,6 +36,15 @@ func getUserByEmail(e string) (*entity.User, error) {
 	}
 	return &user, nil
 }
+
+// LoginUser godoc
+// @Summary Login.
+// @Description Logging in to get jwt token to access admin or user api by roles.
+// @Tags Auth
+// @Param Body body LoginInput true "the body to login a user"
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router /login [post]
 func Login(c echo.Context) error {
 	input := entity.LoginUser{}
 	_ = c.Bind(&input)

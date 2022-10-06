@@ -30,5 +30,11 @@ func Config(key string) string {
 	return os.Getenv(key)
 }
 func Migrate() {
-	DB.AutoMigrate(&entity.Cart{})
+	DB.AutoMigrate(&entity.User{}, &entity.Product{}, &entity.Cart{})
+}
+func Getenv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
 }
