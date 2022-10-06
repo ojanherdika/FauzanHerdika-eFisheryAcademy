@@ -1,4 +1,21 @@
 definitions:
+  entity.CartResponse:
+    properties:
+      checkout:
+        type: boolean
+      id:
+        type: integer
+      product:
+        $ref: '#/definitions/entity.ProductResponse'
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+      user:
+        $ref: '#/definitions/entity.UserResponse'
+      user_id:
+        type: integer
+    type: object
   entity.CreateUserRequest:
     properties:
       email:
@@ -9,6 +26,21 @@ definitions:
         type: string
       phone:
         type: string
+    type: object
+  entity.ProductResponse:
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      photo:
+        type: string
+      price:
+        type: integer
     type: object
   entity.UpdateUserRequest:
     properties:
@@ -32,6 +64,13 @@ definitions:
       phone:
         type: string
     type: object
+  handler.CartCreate:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
   handler.LoginInput:
     properties:
       email:
@@ -53,6 +92,66 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /carts:
+    get:
+      description: get All Carts.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CartResponse'
+      summary: Get All Carts.
+      tags:
+      - Cart
+    post:
+      description: Create Cart.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: the body to register a FULL ACCESS account (USER)
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CartCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CartResponse'
+      security:
+      - BearerToken: []
+      summary: Create Cart.
+      tags:
+      - Cart
+  /carts/user:
+    get:
+      description: get Cart by User.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CartResponse'
+      security:
+      - BearerToken: []
+      summary: Get Cart by User.
+      tags:
+      - Cart
   /login:
     post:
       description: Logging in to get jwt token to access admin or user api by roles.
@@ -74,6 +173,124 @@ paths:
       summary: Login.
       tags:
       - Auth
+  /product/{id}:
+    get:
+      description: Get Product by ID.
+      parameters:
+      - description: product id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Get Product by ID
+      tags:
+      - Product
+  /products:
+    get:
+      description: get all Product.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ProductResponse'
+      summary: Get All Product.
+      tags:
+      - Product
+    post:
+      description: registering a user from full access.
+      parameters:
+      - in: formData
+        name: category
+        type: string
+      - in: formData
+        name: description
+        type: string
+      - in: formData
+        name: name
+        type: string
+      - in: formData
+        name: photo
+        type: string
+      - in: formData
+        name: price
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a Product.
+      tags:
+      - Product
+  /products/{category}:
+    get:
+      description: Get Products by category.
+      parameters:
+      - description: product category
+        in: path
+        name: category
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Get Products by category
+      tags:
+      - Product
+  /products/{id}:
+    delete:
+      description: Delete Product by id.
+      parameters:
+      - description: product id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Delete Product
+      tags:
+      - Product
+  /products/{priceMin}/{priceMax}:
+    get:
+      description: Get Products by price.
+      parameters:
+      - description: product price
+        in: path
+        name: priceMin,priceMax
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Get Products by price
+      tags:
+      - Product
   /user:
     get:
       description: get user.
@@ -103,13 +320,19 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: the body to register a FULL ACCESS account (USER)
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entity.UpdateUserRequest'
+            $ref: '#/definitions/entity.UserResponse'
       security:
       - BearerToken: []
       summary: Update User.

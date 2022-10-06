@@ -12,13 +12,33 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type CreateProduct struct {
+	Name        string `form:"name"`
+	Photo       string `form:"photo"`
+	Price       int    `form:"price"`
+	Category    string `form:"category"`
+	Description string `form:"description"`
+}
 type ProductHandler struct {
 	productUsecase *usecase.ProductUsecase
+}
+type ProductPrice struct {
+	PriceMin int `json:"priceMin"`
+	PriceMax int `json:"priceMax"`
 }
 
 func NewProductHandler(productUsecase *usecase.ProductUsecase) *ProductHandler {
 	return &ProductHandler{productUsecase}
 }
+
+// CreateProduct godoc
+// @Summary Create a Product.
+// @Description registering a user from full access.
+// @Tags Product
+// @Param Body formData CreateProduct true "Body Request fo Create Product"
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router /products [post]
 func (handler ProductHandler) CreateProduct(c echo.Context) error {
 	// req := entity.CreateProductRequest{}
 	// if err := c.Bind(&req); err != nil {
@@ -70,6 +90,14 @@ func (handler ProductHandler) CreateProduct(c echo.Context) error {
 		"data":    product,
 	})
 }
+
+// Get All Product godoc
+// @Summary Get All Product.
+// @Description get all Product.
+// @Tags Product
+// @Produce json
+// @Success 200 {object} entity.ProductResponse
+// @Router /products [get]
 func (handler ProductHandler) GetAllProduct(c echo.Context) error {
 	products, err := handler.productUsecase.GetAllProduct()
 	//response handling with struct
@@ -87,6 +115,15 @@ func (handler ProductHandler) GetAllProduct(c echo.Context) error {
 		"data":    products,
 	})
 }
+
+// Get Product by ID godoc
+// @Summary Get Product by ID
+// @Description Get Product by ID.
+// @Tags Product
+// @Produce json
+// @Param id path int true "product id"
+// @Success 200 {object} string
+// @Router /product/{id} [get]
 func (handler ProductHandler) GetProductByID(c echo.Context) error {
 	productId, _ := strconv.Atoi(c.Param("id"))
 
@@ -105,6 +142,15 @@ func (handler ProductHandler) GetProductByID(c echo.Context) error {
 		"data":    product,
 	})
 }
+
+// Get Products by category godoc
+// @Summary Get Products by category
+// @Description Get Products by category.
+// @Tags Product
+// @Produce json
+// @Param category path string true "product category"
+// @Success 200 {object} string
+// @Router /products/{category} [get]
 func (handler ProductHandler) GetProductByCategory(c echo.Context) error {
 	productCategory := c.Param("category")
 
@@ -123,6 +169,15 @@ func (handler ProductHandler) GetProductByCategory(c echo.Context) error {
 		"data":    product,
 	})
 }
+
+// Get Products by price godoc
+// @Summary Get Products by price
+// @Description Get Products by price.
+// @Tags Product
+// @Produce json
+// @Param Body priceMin,priceMax path string true "product price"
+// @Success 200 {object} string
+// @Router /products/{priceMin}/{priceMax} [get]
 func (handler ProductHandler) GetProductByPrice(c echo.Context) error {
 	priceMin, _ := strconv.Atoi(c.Param("priceMin"))
 	priceMax, _ := strconv.Atoi(c.Param("priceMax"))
@@ -196,6 +251,14 @@ func (handler ProductHandler) UpdateProduct(c echo.Context) error {
 	})
 }
 
+// DeleteProduct godoc
+// @Summary Delete Product
+// @Description Delete Product by id.
+// @Tags Product
+// @Produce json
+// @Param id path int true "product id"
+// @Success 200 {object} string
+// @Router /products/{id} [delete]
 func (handler ProductHandler) DeleteProduct(c echo.Context) error {
 	productId, _ := strconv.Atoi(c.Param("id"))
 	err := handler.productUsecase.DeleteProduct(productId)

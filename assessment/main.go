@@ -9,7 +9,6 @@ import (
 	"e-commerce/usecase"
 
 	"github.com/labstack/echo/v4"
-	// _ "github.com/swaggo/echo-swagger/example/docs"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 

@@ -19,6 +19,10 @@ import (
 type CartHandler struct {
 	cartUsecase *usecase.CartUsecase
 }
+type CartCreate struct {
+	Quantity  int `json:"quantity"`
+	ProductID int `json:"product_id"`
+}
 
 func NewCartHandler(cartUsecase *usecase.CartUsecase) *CartHandler {
 	return &CartHandler{cartUsecase}
@@ -34,6 +38,17 @@ func getUserByID(e int) (*entity.User, error) {
 	}
 	return &user, nil
 }
+
+// Create Cart godoc
+// @Summary Create Cart.
+// @Description Create Cart.
+// @Tags Cart
+// @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
+// @Security BearerToken
+// @Param Body body CartCreate true "the body to register a FULL ACCESS account (USER)"
+// @Produce json
+// @Success 200 {object} entity.CartResponse
+// @Router /carts [post]
 func (handler CartHandler) CreateCart(c echo.Context) error {
 
 	user := c.Get("user").(*jwt.Token)
@@ -94,6 +109,16 @@ func (handler CartHandler) Payment(c echo.Context) error {
 		"data":    filePath,
 	})
 }
+
+// Get Cart by User godoc
+// @Summary Get Cart by User.
+// @Description get Cart by User.
+// @Tags Cart
+// @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
+// @Security BearerToken
+// @Produce json
+// @Success 200 {object} entity.CartResponse
+// @Router /carts/user [get]
 func (handler CartHandler) GetCartByUser(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
@@ -108,6 +133,14 @@ func (handler CartHandler) GetCartByUser(c echo.Context) error {
 		"data":    cart,
 	})
 }
+
+// Get All Carts godoc
+// @Summary Get All Carts.
+// @Description get All Carts.
+// @Tags Cart
+// @Produce json
+// @Success 200 {object} entity.CartResponse
+// @Router /carts [get]
 func (handler CartHandler) GetAllCart(c echo.Context) error {
 	carts, err := handler.cartUsecase.GetAllCart()
 	//response handling with struct

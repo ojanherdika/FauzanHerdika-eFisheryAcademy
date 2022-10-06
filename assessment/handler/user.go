@@ -102,9 +102,10 @@ func (handler UserHandler) GetUserByID(c echo.Context) error {
 // @Description update user.
 // @Tags User
 // @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
+// @Param Body body entity.UpdateUserRequest true "the body to register a FULL ACCESS account (USER)"
 // @Security BearerToken
 // @Produce json
-// @Success 200 {object} entity.UpdateUserRequest
+// @Success 200 {object} entity.UserResponse
 // @Router /user [put]
 func (handler UserHandler) UpdateUser(c echo.Context) error {
 	jwt_user := c.Get("user").(*jwt.Token)
