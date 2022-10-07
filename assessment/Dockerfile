@@ -13,9 +13,9 @@ RUN go mod download
 # Copy Project file into workdir
 COPY . ./
 # build Go
-RUN go build -o /e-commerce
+RUN go build -o /e-commerce-go
 
 EXPOSE 8080
 
 #Execute Go Binary
-CMD [ "/e-commerce" ]
+CMD [ "/e-commerce-go" ]
