@@ -23,9 +23,15 @@ services:
     ports:
       - '8080:8080'
     environment:
-      - SECRET=bla
-      - BASE_URL=bla
-      - DB_URL="host=postgres user=USER password=PASSWORD dbname=DBNAME TimeZone=Asia/Jakarta"
+      - SECRET=
+      - BASE_URL=http://localhost:8080
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=USER
+      - DB_PASSWORD=PASSWORD
+      - DB_NAME=DBNAME
+      - DB_SSLMODE=disable
+      - DB_TIMEZONE=Asia/Jakarta
     volumes:
       - './my-project:/app'
     networks:
